@@ -1,0 +1,166 @@
+╔══════════════════════════════════════════════════════════════════╗
+║           NK's Yams — Quick Deployment Instructions              ║
+╚══════════════════════════════════════════════════════════════════╝
+
+STEP 1: Deploy Backend on Render (Do This FIRST!)
+══════════════════════════════════════════════════════════════════
+
+1. Push to GitHub:
+   
+   git init
+   git add .
+   git commit -m "NK Yams platform - ready for deployment"
+   git remote add origin https://github.com/YOUR_USERNAME/nk-yams.git
+   git push -u origin main
+
+2. Go to https://render.com and login
+
+3. Click "New +" → "Web Service"
+
+4. Connect your GitHub repo
+
+5. Fill in:
+   - Name: nk-yams-api
+   - Build Command: npm install
+   - Start Command: node server.js
+   
+6. Add Environment Variables (click Advanced):
+   
+   DATABASE_URL = postgresql://neondb_owner:npg_Q5iCbta9WSGT@ep-steep-forest-a2y2fjl8-pooler.eu-central-1.aws.neon.tech/neondb?sslmode=require
+   JWT_SECRET = nkyam_jwt_super_secret_change_in_prod_2026
+   ADMIN_TOKEN = 7Xk9mP2nQ8rS5tU3vW7yZ4bC6dF8gH1jL9
+   PORT = 5000
+
+7. Click "Create Web Service"
+
+8. WAIT 5 minutes - Copy your Render URL (like: https://nk-yams-api.onrender.com)
+
+9. Test it: Visit https://YOUR-RENDER-URL.onrender.com/health
+
+
+STEP 2: Update Frontend API URLs
+══════════════════════════════════════════════════════════════════
+
+IMPORTANT: Use YOUR actual Render URL from Step 1!
+
+Update these 4 files (change "http://localhost:5000" to your Render URL):
+
+1. public/index.html
+2. public/register.html
+3. public/login.html
+4. public/admin.html
+
+Quick PowerShell command to update all at once:
+
+$url = "https://YOUR-RENDER-URL.onrender.com"
+Get-ChildItem public\*.html | ForEach-Object {
+    (Get-Content $_.FullName) -replace "http://localhost:5000", $url | Set-Content $_.FullName
+}
+
+
+STEP 3: Deploy Frontend on Vercel
+══════════════════════════════════════════════════════════════════
+
+Method A: Using Vercel CLI (Recommended)
+
+1. Install Vercel CLI:
+   npm install -g vercel
+
+2. Deploy:
+   vercel
+
+3. Follow prompts:
+   - Set up and deploy? Y
+   - Link to existing project? N
+   - Project name? nk-yams
+   - Override settings? N
+
+
+Method B: Using Vercel Dashboard
+
+1. Go to https://vercel.com
+
+2. Login with GitHub
+
+3. Click "Add New..." → "Project"
+
+4. Import your GitHub repo
+
+5. Configure:
+   - Framework: Other
+   - Root Directory: ./
+   - Build Command: (leave empty)
+   - Output Directory: public
+
+6. Click "Deploy"
+
+
+STEP 4: Test Everything
+══════════════════════════════════════════════════════════════════
+
+Backend:
+✅ Visit: https://YOUR-RENDER-URL.onrender.com/health
+✅ Should return: {"status":"OK","db":true}
+
+Frontend:
+✅ Visit: https://YOUR-VERCEL-URL.vercel.app
+✅ No error banner should appear
+✅ Try registering: /register
+✅ Try logging in: /login
+✅ Try placing order: /
+✅ Try admin panel: /admin (password: Nwauwankeiruka1981)
+
+
+STEP 5: Push Future Updates
+══════════════════════════════════════════════════════════════════
+
+Both Render and Vercel auto-deploy when you push to GitHub!
+
+git add .
+git commit -m "Updated features"
+git push
+
+Wait 2-3 minutes - both sites update automatically! ✅
+
+
+TROUBLESHOOTING
+══════════════════════════════════════════════════════════════════
+
+"Backend server offline" on frontend:
+→ Check API URL in HTML files matches Render URL
+→ Verify Render backend is running (check health endpoint)
+
+Backend won't start on Render:
+→ Check Render logs in dashboard
+→ Verify DATABASE_URL environment variable
+→ Ensure Neon database is active
+
+Forms don't work:
+→ Open browser console (F12) - check for errors
+→ Verify CORS (backend should allow all origins)
+→ Check network tab - are API calls reaching backend?
+
+
+YOUR URLS (Fill These In After Deployment)
+══════════════════════════════════════════════════════════════════
+
+Backend (Render): _____________________________________
+
+Frontend (Vercel): _____________________________________
+
+Admin Panel: ___________________________________/admin
+
+
+CREDENTIALS
+══════════════════════════════════════════════════════════════════
+
+Admin Password: Nwauwankeiruka1981
+Admin Token: 7Xk9mP2nQ8rS5tU3vW7yZ4bC6dF8gH1jL9
+
+
+DONE! 🎉
+══════════════════════════════════════════════════════════════════
+
+Your platform is now live and accepting orders!
+
+For detailed steps, see: DEPLOYMENT_STEPS.md

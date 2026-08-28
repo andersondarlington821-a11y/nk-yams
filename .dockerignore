@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+*.md
+.env.example
+app.py
+requirements.txt
+runtime.txt
+serve.ps1
+start-server.ps1
+install-node-and-run.ps1
+start-docker.ps1
+orders.json

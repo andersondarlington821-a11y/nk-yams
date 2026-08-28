@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In — NK's Yams</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root {
+      --bg:#FDF6EC; --bg-card:#FFFFFF; --text:#2C1A0E; --text-sub:#7A5C3A;
+      --accent:#D4920A; --accent-h:#B8780A; --accent-lt:#FFF3D6;
+      --border:#EDE0CE; --input-bg:#FEFAF4;
+      --shadow:0 8px 40px rgba(123,63,0,.12);
+      --hero:linear-gradient(150deg,#4A2200 0%,#7B3F00 100%);
+      --error:#DC2626; --success:#16A34A;
+    }
+    [data-theme="dark"] {
+      --bg:#0F0A05; --bg-card:#1A1006; --text:#F5E6D0; --text-sub:#9C7050;
+      --accent:#F0A832; --accent-h:#D4920A; --accent-lt:#2A1A04;
+      --border:#2E1E0A; --input-bg:#1E1409;
+      --shadow:0 8px 40px rgba(0,0,0,.5);
+      --hero:linear-gradient(150deg,#1A0900 0%,#3D1F00 100%);
+      --error:#EF4444; --success:#22C55E;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg);color:var(--text);
+      min-height:100vh;display:flex;
+      transition:background .4s,color .4s;
+    }
+
+    /* LEFT PANEL */
+    .left-panel{
+      width:420px;flex-shrink:0;
+      background:var(--hero);
+      padding:48px 40px;
+      display:flex;flex-direction:column;justify-content:space-between;
+      position:relative;overflow:hidden;
+    }
+    .left-panel::before{
+      content:'';position:absolute;
+      width:450px;height:450px;
+      background:radial-gradient(circle,rgba(240,168,50,.3) 0%,transparent 70%);
+      bottom:-100px;right:-80px;border-radius:50%;
+      animation:orb 9s ease-in-out infinite;
+    }
+    .left-panel::after{
+      content:'';position:absolute;
+      width:260px;height:260px;
+      background:radial-gradient(circle,rgba(212,146,10,.25) 0%,transparent 70%);
+      top:-60px;left:-60px;border-radius:50%;
+      animation:orb 7s ease-in-out infinite reverse;
+    }
+    @keyframes orb{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(15px,-15px) scale(1.05)}}
+    .panel-logo{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:800;color:#fff;text-decoration:none;position:relative;z-index:2;}
+    .panel-logo span{color:#F0A832}
+    .panel-content{position:relative;z-index:2}
+    .panel-icon{font-size:4.5rem;margin-bottom:20px;display:block;animation:float 4s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    .panel-title{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:14px;}
+    .panel-title span{color:#F0A832}
+    .panel-desc{color:rgba(245,230,208,.7);font-size:.95rem;line-height:1.8;margin-bottom:32px}
+    .panel-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .stat-box{
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+      border-radius:14px;padding:16px;
+    }
+    .stat-val{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:800;color:#F0A832}
+    .stat-lbl{font-size:.75rem;color:rgba(245,230,208,.6);font-weight:500;margin-top:4px}
+    .panel-bottom{position:relative;z-index:2;color:rgba(245,230,208,.35);font-size:.78rem}
+
+    /* RIGHT PANEL */
+    .right-panel{
+      flex:1;display:flex;align-items:center;justify-content:center;
+      padding:40px 24px;position:relative;
+    }
+    .theme-btn{
+      position:absolute;top:24px;right:24px;
+      width:44px;height:24px;background:var(--border);
+      border-radius:12px;border:none;cursor:pointer;outline:none;transition:background .3s;
+    }
+    .theme-btn:hover{background:var(--accent)}
+    .theme-btn .knob{
+      position:absolute;top:2px;left:2px;width:20px;height:20px;
+      background:#fff;border-radius:50%;transition:transform .3s;
+      font-size:.6rem;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 2px 4px rgba(0,0,0,.2);
+    }
+    [data-theme="dark"] .theme-btn .knob{transform:translateX(20px)}
+
+    .form-container{width:100%;max-width:420px}
+    .form-header{margin-bottom:36px;text-align:center}
+    .form-logo{
+      font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:800;
+      color:var(--text);margin-bottom:20px;display:block;
+    }
+    .form-logo span{color:var(--accent)}
+    .form-title{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:800;color:var(--text);margin-bottom:8px;}
+    .form-subtitle{color:var(--text-sub);font-size:.9rem}
+
+    .form-group{margin-bottom:20px}
+    .form-group label{display:block;font-size:.78rem;font-weight:700;color:var(--text-sub);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;}
+    .input-wrap{position:relative}
+    .input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-sub);font-size:.9rem;pointer-events:none;transition:color .3s;}
+    .input-wrap:focus-within .input-icon{color:var(--accent)}
+    .form-group input{
+      width:100%;padding:14px 14px 14px 42px;
+      background:var(--input-bg);border:1.5px solid var(--border);
+      border-radius:12px;color:var(--text);
+      font-family:'Inter',sans-serif;font-size:.95rem;outline:none;transition:all .3s;
+    }
+    .form-group input::placeholder{color:var(--text-sub);opacity:.5}
+    .form-group input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(212,146,10,.1);background:var(--bg-card);}
+    .form-group.error input{border-color:var(--error)}
+    .field-error{color:var(--error);font-size:.78rem;font-weight:600;margin-top:6px;display:none;}
+    .form-group.error .field-error{display:block}
+    .password-toggle{
+      position:absolute;right:14px;top:50%;transform:translateY(-50%);
+      background:none;border:none;color:var(--text-sub);cursor:pointer;font-size:.9rem;padding:4px;transition:color .3s;
+    }
+    .password-toggle:hover{color:var(--accent)}
+
+    .forgot-row{display:flex;justify-content:flex-end;margin-top:-12px;margin-bottom:20px;}
+    .forgot-link{color:var(--accent);font-size:.82rem;font-weight:600;text-decoration:none;}
+    .forgot-link:hover{text-decoration:underline}
+
+    .alert{
+      padding:14px 16px;border-radius:12px;font-size:.875rem;font-weight:500;
+      margin-bottom:20px;display:none;align-items:center;gap:10px;
+    }
+    .alert.error{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.25);color:var(--error);display:flex;}
+    .alert.success{background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.25);color:var(--success);display:flex;}
+
+    .submit-btn{
+      width:100%;padding:16px;
+      background:linear-gradient(135deg,#D4920A,#F0A832);
+      color:#fff;border:none;border-radius:12px;
+      font-family:'Inter',sans-serif;font-size:1rem;font-weight:700;
+      cursor:pointer;transition:all .3s;
+      box-shadow:0 6px 24px rgba(212,146,10,.4);
+      display:flex;align-items:center;justify-content:center;gap:10px;
+    }
+    .submit-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 32px rgba(212,146,10,.5);}
+    .submit-btn:disabled{opacity:.6;cursor:not-allowed}
+    .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+    .submit-btn.loading .spinner{display:block}
+    .submit-btn.loading .btn-text{display:none}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .register-link-row{text-align:center;margin-top:24px;font-size:.9rem;color:var(--text-sub);}
+    .register-link-row a{color:var(--accent);font-weight:700;text-decoration:none;}
+    .register-link-row a:hover{text-decoration:underline}
+
+    @media(max-width:860px){.left-panel{display:none}.right-panel{padding:60px 24px 40px}}
+  </style>
+</head>
+<body>
+
+<div class="left-panel">
+  <a href="index.html" class="panel-logo">NK's<span>Yam</span></a>
+  <div class="panel-content">
+    <span class="panel-icon">🍠</span>
+    <div class="panel-title">Welcome<br><span>Back!</span></div>
+    <p class="panel-desc">Sign in to place orders, track your deliveries, and enjoy premium farm-fresh yams delivered to your door.</p>
+    <div class="panel-stats">
+      <div class="stat-box"><div class="stat-val">500+</div><div class="stat-lbl">Happy Customers</div></div>
+      <div class="stat-box"><div class="stat-val">3</div><div class="stat-lbl">Yam Varieties</div></div>
+      <div class="stat-box"><div class="stat-val">24h</div><div class="stat-lbl">Fast Delivery</div></div>
+      <div class="stat-box"><div class="stat-val">100%</div><div class="stat-lbl">Farm Fresh</div></div>
+    </div>
+  </div>
+  <div class="panel-bottom">&copy; 2026 NK's Yam. All rights reserved.</div>
+</div>
+
+<div class="right-panel">
+  <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+    <div class="knob" id="themeKnob">☀️</div>
+  </button>
+
+  <div class="form-container">
+    <div class="form-header">
+      <a href="index.html" class="form-logo">NK's<span>Yam</span></a>
+      <div class="form-title">Sign In</div>
+      <div class="form-subtitle">Enter your credentials to access your account</div>
+    </div>
+
+    <div class="alert" id="alertBox"></div>
+
+    <!-- Server status banner -->
+    <div id="serverBanner" style="display:none;padding:10px 14px;border-radius:10px;font-size:.82rem;font-weight:600;margin-bottom:18px;align-items:center;gap:8px;background:rgba(185,28,28,.08);border:1px solid rgba(185,28,28,.22);color:#B91C1C;">
+      <i class="fas fa-circle-xmark"></i>
+      <span>Backend server is offline. Login will not work until the Node.js server is running on port 5000. Run <strong>.\start-docker.ps1</strong> to start it.</span>
+    </div>
+
+    <form id="loginForm" novalidate>
+      <div class="form-group" id="fg-email">
+        <label for="email">Email Address</label>
+        <div class="input-wrap">
+          <i class="fas fa-envelope input-icon"></i>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email"/>
+        </div>
+        <div class="field-error" id="err-email"></div>
+      </div>
+
+      <div class="form-group" id="fg-password">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <i class="fas fa-lock input-icon"></i>
+          <input type="password" id="password" placeholder="Your password" autocomplete="current-password"/>
+          <button type="button" class="password-toggle" id="pwToggle" aria-label="Show password">
+            <i class="fas fa-eye" id="pwIcon"></i>
+          </button>
+        </div>
+        <div class="field-error" id="err-password"></div>
+      </div>
+
+      <div class="forgot-row">
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <div class="spinner"></div>
+        <span class="btn-text"><i class="fas fa-right-to-bracket"></i> Sign In</span>
+      </button>
+    </form>
+
+    <div class="register-link-row">
+      Don't have an account? <a href="register.html">Create one for free</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API = 'http://localhost:5000';
+
+  // ---- SERVER STATUS CHECK ----
+  (async () => {
+    try {
+      const r = await fetch(`${API}/health`, { signal: AbortSignal.timeout(3000) });
+      if (!r.ok) throw new Error();
+      document.getElementById('serverBanner').style.display = 'none';
+    } catch {
+      document.getElementById('serverBanner').style.display = 'flex';
+    }
+  })();
+
+  // Theme
+  const html = document.documentElement;
+  const themeBtn = document.getElementById('themeBtn');
+  const themeKnob = document.getElementById('themeKnob');
+  const saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
+  html.setAttribute('data-theme', saved);
+  themeKnob.textContent = saved === 'dark' ? '🌙' : '☀️';
+  themeBtn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    themeKnob.textContent = next === 'dark' ? '🌙' : '☀️';
+  });
+
+  // Redirect if already logged in
+  if (localStorage.getItem('nk_token')) window.location.href = 'index.html';
+
+  // Password toggle
+  document.getElementById('pwToggle').addEventListener('click', () => {
+    const inp = document.getElementById('password');
+    const ico = document.getElementById('pwIcon');
+    const show = inp.type === 'password';
+    inp.type = show ? 'text' : 'password';
+    ico.className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
+  });
+
+  function showAlert(msg, type = 'error') {
+    const ab = document.getElementById('alertBox');
+    ab.className = 'alert ' + type;
+    ab.innerHTML = `<i class="fas fa-${type==='error'?'circle-exclamation':'circle-check'}"></i> ${msg}`;
+  }
+  function clearErrors() {
+    document.querySelectorAll('.form-group').forEach(fg => fg.classList.remove('error'));
+    document.querySelectorAll('.field-error').forEach(e => e.textContent = '');
+    const ab = document.getElementById('alertBox');
+    ab.className = 'alert'; ab.innerHTML = '';
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearErrors();
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    let valid = true;
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      document.getElementById('fg-email').classList.add('error');
+      document.getElementById('err-email').textContent = 'Enter a valid email';
+      valid = false;
+    }
+    if (!password) {
+      document.getElementById('fg-password').classList.add('error');
+      document.getElementById('err-password').textContent = 'Password is required';
+      valid = false;
+    }
+    if (!valid) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true; btn.classList.add('loading');
+
+    try {
+      const res  = await fetch(`${API}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        localStorage.setItem('nk_token', data.token);
+        localStorage.setItem('nk_user',  JSON.stringify(data.user));
+        showAlert('Welcome back! Redirecting...', 'success');
+        const redirect = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
+        setTimeout(() => window.location.href = redirect, 1000);
+      } else {
+        showAlert(data.message || 'Invalid email or password');
+      }
+    } catch (err) {
+      showAlert('Connection error. Make sure the server is running.');
+    } finally {
+      btn.disabled = false; btn.classList.remove('loading');
+    }
+  });
+</script>
+</body>
+</html>

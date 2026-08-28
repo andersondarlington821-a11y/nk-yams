@@ -1,0 +1,113 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                  NK's Yams — Quick Reference Card                ║
+╚══════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────┐
+│ 🚀 START SERVER (One Command)                                   │
+└─────────────────────────────────────────────────────────────────┘
+  .\start-docker.ps1
+
+┌─────────────────────────────────────────────────────────────────┐
+│ 🌐 ACCESS URLs                                                   │
+└─────────────────────────────────────────────────────────────────┘
+  Frontend:  http://localhost:8080/index.html
+  Register:  http://localhost:8080/register.html
+  Login:     http://localhost:8080/login.html
+  Admin:     http://localhost:8080/admin.html
+  API:       http://localhost:5000
+  Health:    http://localhost:5000/health
+
+┌─────────────────────────────────────────────────────────────────┐
+│ 🔑 DEFAULT CREDENTIALS                                           │
+└─────────────────────────────────────────────────────────────────┘
+  Admin Password: Nwauwankeiruka1981
+
+┌─────────────────────────────────────────────────────────────────┐
+│ 🐳 DOCKER COMMANDS                                               │
+└─────────────────────────────────────────────────────────────────┘
+  Start:         .\start-docker.ps1
+  View logs:     docker logs -f nks-yams-api
+  Stop:          docker stop nks-yams-api
+  Restart:       docker start nks-yams-api
+  Rebuild:       docker stop nks-yams-api
+                 docker rm nks-yams-api
+                 docker rmi nks-yams
+                 .\start-docker.ps1
+
+┌─────────────────────────────────────────────────────────────────┐
+│ 📝 REQUIRED SETUP                                                │
+└─────────────────────────────────────────────────────────────────┘
+  1. Install Docker Desktop from https://docker.com/get-started/
+  2. Get Neon database URL from https://console.neon.tech
+  3. Add it to .env file:
+     DATABASE_URL=postgresql://user:pass@host/db?sslmode=require
+  4. Run: .\start-docker.ps1
+
+┌─────────────────────────────────────────────────────────────────┐
+│ 🔧 USEFUL FILES                                                  │
+└─────────────────────────────────────────────────────────────────┘
+  Quick Start:        GETTING_STARTED.md
+  Full Docs:          README.md
+  Setup Guide:        SETUP.md
+  Verification:       CHECKLIST.md
+  Complete Summary:   FINAL_SUMMARY.md
+  This Card:          QUICK_REFERENCE.txt
+
+┌─────────────────────────────────────────────────────────────────┐
+│ 📊 BACKEND FILES                                                 │
+└─────────────────────────────────────────────────────────────────┘
+  server.js          Main Express server (306 lines)
+  db.js              PostgreSQL connection + schema
+  helpers.js         JWT, order ID, WhatsApp
+  middleware.js      Authentication
+  package.json       Dependencies
+
+┌─────────────────────────────────────────────────────────────────┐
+│ 🗄️ DATABASE INFO                                                 │
+└─────────────────────────────────────────────────────────────────┘
+  Tables:    users, orders
+  Statuses:  pending, confirmed, dispatched, delivered, cancelled
+  Yam Types: Water Yam, Yellow Yam, White Yam
+  Price:     ₦1,000 - ₦3,000 per tuber
+
+┌─────────────────────────────────────────────────────────────────┐
+│ 🚨 TROUBLESHOOTING                                               │
+└─────────────────────────────────────────────────────────────────┘
+  Docker not running?
+    → Start Docker Desktop from Start menu
+
+  Database connection fails?
+    → Check .env has correct DATABASE_URL
+    → Verify Neon project is active
+
+  Admin login fails?
+    → Password: Nwauwankeiruka1981 (case-sensitive)
+
+  Frontend can't reach API?
+    → Check http://localhost:5000/health
+    → View logs: docker logs -f nks-yams-api
+
+┌─────────────────────────────────────────────────────────────────┐
+│ 🌍 DEPLOY TO PRODUCTION                                          │
+└─────────────────────────────────────────────────────────────────┘
+  1. Push to GitHub
+  2. Create Web Service on Render.com
+  3. Build: npm install
+  4. Start: node server.js
+  5. Add environment variables
+  6. Update frontend API URLs to production domain
+
+┌─────────────────────────────────────────────────────────────────┐
+│ ✅ STATUS: 100% COMPLETE & PRODUCTION-READY                      │
+└─────────────────────────────────────────────────────────────────┘
+  ✅ Backend (14 API endpoints)
+  ✅ Frontend (4 pages)
+  ✅ Authentication (JWT + Admin)
+  ✅ Database (PostgreSQL)
+  ✅ Docker (containerized)
+  ✅ Documentation (5 guides)
+  ✅ WhatsApp (optional)
+
+╔══════════════════════════════════════════════════════════════════╗
+║  Need help? Read GETTING_STARTED.md for the 3-step quick guide  ║
+╚══════════════════════════════════════════════════════════════════╝
