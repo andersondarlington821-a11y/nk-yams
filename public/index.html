@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NK's Premium Yams — Order Fresh Yams</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root {
+      --bg:#FDF6EC; --bg-card:#FFF; --text:#2C1A0E; --text-sub:#7A5C3A;
+      --accent:#D4920A; --accent-h:#B8780A; --border:#EDE0CE;
+      --shadow:0 8px 40px rgba(123,63,0,.12);
+      --hero:linear-gradient(150deg,#4A2200,#7B3F00);
+      --error:#DC2626; --success:#16A34A;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    
+    /* Header */
+    header{background:var(--hero);color:#fff;padding:60px 0;text-align:center}
+    h1{font-family:'Playfair Display',serif;font-size:3rem;font-weight:800;margin-bottom:10px}
+    h1 span{color:#F0A832}
+    .subtitle{font-size:1.2rem;opacity:.9}
+    
+    /* Server Banner */
+    .server-banner{background:rgba(185,28,28,.08);border:1px solid rgba(185,28,28,.22);color:#B91C1C;padding:12px 20px;margin:20px auto;border-radius:10px;display:none;max-width:800px}
+    .server-banner.show{display:block}
+    
+    /* Auth Bar */
+    .auth-bar{background:var(--bg-card);border-bottom:2px solid var(--border);padding:15px 0}
+    .auth-container{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center}
+    .user-info{display:flex;align-items:center;gap:15px}
+    .btn{padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-weight:600;text-decoration:none;display:inline-block}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-primary:hover{background:var(--accent-h)}
+    .btn-secondary{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+    
+    /* Order Form */
+    .order-section{padding:60px 0}
+    .form-card{background:var(--bg-card);border-radius:16px;box-shadow:var(--shadow);padding:40px;max-width:600px;margin:0 auto}
+    .form-group{margin-bottom:20px}
+    label{display:block;font-weight:600;margin-bottom:8px;color:var(--text-sub)}
+    input,select,textarea{width:100%;padding:12px;border:2px solid var(--border);border-radius:8px;font-family:'Inter',sans-serif;font-size:1rem}
+    input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none}
+    .btn-submit{width:100%;padding:16px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:1.1rem;font-weight:700;cursor:pointer;margin-top:10px}
+    .btn-submit:hover{background:var(--accent-h)}
+    .alert{padding:14px;border-radius:8px;margin-bottom:20px;display:none}
+    .alert.error{background:rgba(220,38,38,.08);color:var(--error);display:block}
+    .alert.success{background:rgba(22,163,74,.08);color:var(--success);display:block}
+    
+    /* Orders List */
+    .orders-section{margin-top:40px}
+    .order-card{background:var(--bg-card);border-radius:12px;padding:20px;margin-bottom:15px;border:2px solid var(--border)}
+    .order-id{font-weight:700;color:var(--accent);margin-bottom:10px}
+    .order-status{display:inline-block;padding:4px 12px;border-radius:6px;font-size:.85rem;font-weight:600}
+    .status-pending{background:#FEF3C7;color:#92400E}
+    .status-confirmed{background:#DBEAFE;color:#1E40AF}
+    .status-delivered{background:#D1FAE5;color:#065F46}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>NK's <span>Premium</span> Yams</h1>
+    <p class="subtitle">🍠 Fresh from the farm to your table</p>
+  </div>
+</header>
+
+<div class="auth-bar">
+  <div class="auth-container">
+    <div class="logo">NK's Yams</div>
+    <div class="user-info" id="authSection"></div>
+  </div>
+</div>
+
+<div id="serverBanner" class="server-banner">
+  <strong>⚠️ Backend Offline:</strong> Server not responding. Please try again later.
+</div>
+
+<section class="order-section">
+  <div class="container">
+    <div class="form-card">
+      <h2 style="margin-bottom:30px;font-family:'Playfair Display',serif">Place Your Order</h2>
+      
+      <div class="alert" id="alertBox"></div>
+      
+      <form id="orderForm">
+        <div class="form-group">
+          <label for="customerName">Full Name</label>
+          <input type="text" id="customerName" required/>
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" required/>
+        </div>
+        
+        <div class="form-group">
+          <label for="deliveryAddress">Delivery Address</label>
+          <textarea id="deliveryAddress" rows="3" required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="yamType">Yam Type</label>
+          <select id="yamType" required>
+            <option value="">Select type...</option>
+            <option value="Water Yam">Water Yam</option>
+            <option value="Yellow Yam">Yellow Yam</option>
+            <option value="White Yam">White Yam</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="pricePerTuber">Price Per Tuber (₦)</label>
+          <input type="number" id="pricePerTuber" min="1000" max="3000" value="1500" required/>
+        </div>
+        
+        <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input type="number" id="quantity" min="1" value="1" required/>
+        </div>
+        
+        <div class="form-group">
+          <label>Total: <strong id="totalPrice">₦1,500</strong></label>
+        </div>
+        
+        <button type="submit" class="btn-submit">
+          <i class="fas fa-shopping-cart"></i> Place Order
+        </button>
+      </form>
+    </div>
+    
+    <div class="orders-section" id="ordersSection" style="display:none">
+      <h3 style="margin-bottom:20px">My Orders</h3>
+      <div id="ordersList"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const API = 'https://nk-yams-api.onrender.com';
+  
+  // Check server status
+  (async () => {
+    try {
+      const r = await fetch(`${API}/health`, { signal: AbortSignal.timeout(3000) });
+      if (!r.ok) throw new Error();
+    } catch {
+      document.getElementById('serverBanner').classList.add('show');
+    }
+  })();
+  
+  // Auth check
+  const token = localStorage.getItem('nk_token');
+  const user = JSON.parse(localStorage.getItem('nk_user') || '{}');
+  const authSection = document.getElementById('authSection');
+  
+  if (token && user.email) {
+    authSection.innerHTML = `
+      <span>Welcome, <strong>${user.fullName || user.email}</strong></span>
+      <button class="btn btn-secondary" onclick="logout()">Logout</button>
+    `;
+    loadMyOrders();
+  } else {
+    authSection.innerHTML = `
+      <a href="register.html" class="btn btn-secondary">Register</a>
+      <a href="login.html" class="btn btn-primary">Login</a>
+    `;
+  }
+  
+  function logout() {
+    localStorage.removeItem('nk_token');
+    localStorage.removeItem('nk_user');
+    location.reload();
+  }
+  
+  // Calculate total
+  const price = document.getElementById('pricePerTuber');
+  const qty = document.getElementById('quantity');
+  const total = document.getElementById('totalPrice');
+  
+  function updateTotal() {
+    const t = (price.value || 0) * (qty.value || 0);
+    total.textContent = `₦${t.toLocaleString('en-NG')}`;
+  }
+  price.addEventListener('input', updateTotal);
+  qty.addEventListener('input', updateTotal);
+  
+  // Submit order
+  document.getElementById('orderForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    if (!token) {
+      showAlert('Please login to place an order', 'error');
+      setTimeout(() => location.href = 'login.html', 2000);
+      return;
+    }
+    
+    const data = {
+      customerName: document.getElementById('customerName').value,
+      phone: document.getElementById('phone').value,
+      deliveryAddress: document.getElementById('deliveryAddress').value,
+      yamType: document.getElementById('yamType').value,
+      pricePerTuber: parseInt(price.value),
+      quantity: parseInt(qty.value)
+    };
+    
+    try {
+      const res = await fetch(`${API}/api/orders`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      
+      if (result.success) {
+        showAlert(`Order placed! Your order ID is ${result.orderId}`, 'success');
+        document.getElementById('orderForm').reset();
+        updateTotal();
+        loadMyOrders();
+      } else {
+        showAlert(result.message || 'Failed to place order', 'error');
+      }
+    } catch (err) {
+      showAlert('Connection error. Please try again.', 'error');
+    }
+  });
+  
+  function showAlert(msg, type) {
+    const box = document.getElementById('alertBox');
+    box.className = `alert ${type}`;
+    box.textContent = msg;
+    setTimeout(() => box.className = 'alert', 5000);
+  }
+  
+  // Load my orders
+  async function loadMyOrders() {
+    if (!token) return;
+    
+    try {
+      const res = await fetch(`${API}/api/orders/mine`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      
+      if (data.success && data.orders.length > 0) {
+        document.getElementById('ordersSection').style.display = 'block';
+        document.getElementById('ordersList').innerHTML = data.orders.map(o => `
+          <div class="order-card">
+            <div class="order-id">Order #${o.orderId}</div>
+            <div><strong>${o.yamType}</strong> — ${o.quantity} tubers</div>
+            <div>Total: <strong>₦${o.totalPrice.toLocaleString('en-NG')}</strong></div>
+            <div style="margin-top:10px">
+              <span class="order-status status-${o.status}">${o.status}</span>
+            </div>
+          </div>
+        `).join('');
+      }
+    } catch (err) {
+      console.error('Failed to load orders:', err);
+    }
+  }
+</script>
+
+</body>
+</html>

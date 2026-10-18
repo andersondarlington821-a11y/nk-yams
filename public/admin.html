@@ -667,7 +667,7 @@ kbd{background:var(--bg2);border:1.5px solid var(--bdr);border-radius:5px;paddin
         <div class="settings-hdr"><i class="fas fa-server"></i><div class="settings-hdr-title">API Configuration</div></div>
         <div class="settings-row">
           <div><div class="settings-info-title">Backend URL</div><div class="settings-info-sub">Node.js API server address</div></div>
-          <input type="text" class="settings-input" id="apiUrlInput" value="http://localhost:5000"/>
+          <input type="text" class="settings-input" id="apiUrlInput" value="https://nk-yams-api.onrender.com"/>
         </div>
         <div class="settings-row">
           <div><div class="settings-info-title">Admin Token</div><div class="settings-info-sub">X-Admin-Token header value</div></div>
@@ -846,7 +846,7 @@ kbd{background:var(--bg2);border:1.5px solid var(--bdr);border-radius:5px;paddin
 // ============================================================
 //  CONFIG  (overridable from Settings)
 // ============================================================
-let API          = localStorage.getItem('nk_api_url')   || 'http://localhost:5000';
+let API          = localStorage.getItem('nk_api_url')   || 'https://nk-yams-api.onrender.com';
 let ADMIN_TOKEN  = localStorage.getItem('nk_adm_token') || '7Xk9mP2nQ8rS5tU3vW7yZ4bC6dF8gH1jL9';
 const ADMIN_PWD  = 'Nwauwankeiruka1981';
 let HDR          = () => ({'Content-Type':'application/json','X-Admin-Token': ADMIN_TOKEN});
