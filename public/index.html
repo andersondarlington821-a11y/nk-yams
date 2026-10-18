@@ -801,7 +801,7 @@
   });
   
   // Close mobile menu when any link is clicked
-  navLinks.querySelectorAll('a').forEach(link => {
+  navLinks.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', () => {
       navLinks.classList.remove('active');
       const icon = mobileToggle.querySelector('i');
@@ -821,18 +821,31 @@
   });
   
   // Smooth scrolling for anchor links (only for # links on same page)
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const href = this.getAttribute('href');
-      // Only handle hash links that aren't just "#"
-      if (href && href !== '#') {
-        const target = document.querySelector(href);
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          navLinks.classList.remove('active');
-        }
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        navLinks.classList.remove('active');
+        const icon = mobileToggle.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
       }
+    });
+  });
+  
+  // Close menu when clicking Register or Login buttons
+  document.querySelectorAll('.nav-btn-primary, .nav-btn-secondary').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      // Let the default navigation happen, just close the menu
+      setTimeout(() => {
+        navLinks.classList.remove('active');
+        const icon = mobileToggle.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }, 100);
     });
   });
 </script>
