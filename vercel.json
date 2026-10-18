@@ -1,4 +1,12 @@
 {
   "buildCommand": null,
-  "outputDirectory": "public"
+  "outputDirectory": "public",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
 }
