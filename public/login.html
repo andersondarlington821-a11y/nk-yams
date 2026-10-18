@@ -315,11 +315,22 @@
       const data = await res.json();
 
       if (data.success) {
+        // Check if first-time login
+        const hasLoggedInBefore = localStorage.getItem('nk_has_logged_in');
+        const isFirstTime = !hasLoggedInBefore;
+        
         localStorage.setItem('nk_token', data.token);
         localStorage.setItem('nk_user',  JSON.stringify(data.user));
-        showAlert('Welcome back! Redirecting...', 'success');
+        localStorage.setItem('nk_has_logged_in', 'true');
+        localStorage.setItem('nk_is_first_login', isFirstTime ? 'true' : 'false');
+        
+        const welcomeMsg = isFirstTime 
+          ? `🎉 Welcome to NK's Yams, ${data.user.fullName || data.user.email}! Let's get you started!`
+          : `Welcome back, ${data.user.fullName || data.user.email}! 👋`;
+        
+        showAlert(welcomeMsg, 'success');
         const redirect = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
-        setTimeout(() => window.location.href = redirect, 1000);
+        setTimeout(() => window.location.href = redirect, 2000);
       } else {
         showAlert(data.message || 'Invalid email or password');
       }

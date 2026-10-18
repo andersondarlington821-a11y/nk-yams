@@ -561,8 +561,9 @@
       if (data.success) {
         localStorage.setItem('nk_token', data.token);
         localStorage.setItem('nk_user',  JSON.stringify(data.user));
-        showAlert('Account created! Redirecting...', 'success');
-        setTimeout(() => window.location.href = 'index.html', 1200);
+        localStorage.setItem('nk_is_first_login', 'true'); // Mark as first-time user
+        showAlert(`🎉 Welcome ${data.user.fullName}! Your account is ready!`, 'success');
+        setTimeout(() => window.location.href = 'index.html', 2000);
       } else {
         if (data.message && data.message.toLowerCase().includes('email')) {
           fieldError('email', data.message);

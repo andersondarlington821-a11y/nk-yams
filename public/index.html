@@ -575,6 +575,22 @@
   </div>
 </nav>
 
+<!-- Welcome Banner (shown after login) -->
+<div id="welcomeBanner" style="display:none;position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:999;background:linear-gradient(135deg,#16A34A,#22C55E);color:#fff;padding:1rem 2rem;border-radius:50px;box-shadow:0 8px 32px rgba(22,163,74,0.4);animation:slideDown 0.5s ease;max-width:90%;text-align:center">
+  <i class="fas fa-party-horn"></i> <span id="welcomeMessage"></span>
+</div>
+
+<style>
+@keyframes slideDown {
+  from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+}
+</style>
+
 <!-- Hero Section -->
 <section class="hero">
   <div class="hero-content">
@@ -735,6 +751,42 @@
 </footer>
 
 <script>
+  // Show welcome banner if just logged in
+  window.addEventListener('DOMContentLoaded', () => {
+    const isFirstLogin = localStorage.getItem('nk_is_first_login');
+    const user = JSON.parse(localStorage.getItem('nk_user') || '{}');
+    
+    if (isFirstLogin === 'true' && user.fullName) {
+      const banner = document.getElementById('welcomeBanner');
+      const message = document.getElementById('welcomeMessage');
+      message.textContent = `Welcome to NK's Yams, ${user.fullName}! 🎉`;
+      banner.style.display = 'block';
+      
+      // Clear the flag
+      localStorage.removeItem('nk_is_first_login');
+      
+      // Hide after 5 seconds
+      setTimeout(() => {
+        banner.style.animation = 'slideUp 0.5s ease';
+        setTimeout(() => banner.style.display = 'none', 500);
+      }, 5000);
+    } else if (isFirstLogin === 'false' && user.fullName) {
+      const banner = document.getElementById('welcomeBanner');
+      const message = document.getElementById('welcomeMessage');
+      message.textContent = `Welcome back, ${user.fullName}! 👋`;
+      banner.style.display = 'block';
+      
+      // Clear the flag
+      localStorage.removeItem('nk_is_first_login');
+      
+      // Hide after 4 seconds
+      setTimeout(() => {
+        banner.style.animation = 'slideUp 0.5s ease';
+        setTimeout(() => banner.style.display = 'none', 500);
+      }, 4000);
+    }
+  });
+  
   // Mobile menu toggle
   const mobileToggle = document.getElementById('mobileToggle');
   const navLinks = document.getElementById('navLinks');
