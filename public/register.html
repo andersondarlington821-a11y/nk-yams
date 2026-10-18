@@ -281,9 +281,12 @@
       .left-panel{display:none}
       .right-panel{padding:60px 24px 40px}
     }
+    @media(max-width:860px){.left-panel{display:none}.right-panel{padding:60px 24px 40px}}
     @media(max-width:480px){
       .form-row{grid-template-columns:1fr}
-      .form-container{max-width:100%}
+      .form-container{max-width:100%;padding:0 16px}
+      .form-header{margin-bottom:24px}
+      .form-title{font-size:1.6rem}
     }
   </style>
 </head>
