@@ -775,6 +775,12 @@
     updatePriceSelection();
     updateSummary();
     
+    // Pre-fill phone number if user has one
+    const phoneInput = document.getElementById('phoneNumber');
+    if (user.phone || user.whatsappNumber) {
+      phoneInput.value = user.phone || user.whatsappNumber;
+    }
+    
     alertBox.className = 'alert';
     alertBox.innerHTML = '';
     
@@ -851,10 +857,10 @@
     }
 
     const orderData = {
+      customerName: user.fullName || user.email,
       yamType: currentProduct.name,
-      pricePerUnit: currentPrice,
+      pricePerTuber: currentPrice,
       quantity: currentQuantity,
-      totalAmount: currentPrice * currentQuantity,
       deliveryAddress: address,
       phone: phone
     };
