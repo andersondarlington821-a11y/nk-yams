@@ -568,8 +568,9 @@
     <div class="nav-links" id="navLinks">
       <a href="#features">Features</a>
       <a href="#products">Products</a>
-      <a href="register.html" class="nav-btn-secondary">Register</a>
-      <a href="login.html" class="nav-btn-primary">Login</a>
+      <a href="register.html" class="nav-btn-secondary" id="registerBtn">Register</a>
+      <a href="login.html" class="nav-btn-primary" id="loginBtn">Login</a>
+      <a href="#" class="nav-btn-secondary" id="logoutBtn" style="display:none;">Logout</a>
     </div>
     <button class="mobile-toggle" id="mobileToggle">
       <i class="fas fa-bars"></i>
@@ -753,8 +754,37 @@
 </footer>
 
 <script>
-  // Show welcome banner if just logged in
+  // Check login status and show/hide buttons
   window.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('nk_token');
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    
+    if (token) {
+      // User is logged in - hide login/register, show logout
+      loginBtn.style.display = 'none';
+      registerBtn.style.display = 'none';
+      logoutBtn.style.display = 'block';
+    } else {
+      // User is NOT logged in - show login/register, hide logout
+      loginBtn.style.display = 'block';
+      registerBtn.style.display = 'block';
+      logoutBtn.style.display = 'none';
+    }
+    
+    // Logout functionality
+    logoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('nk_token');
+      localStorage.removeItem('nk_user');
+      localStorage.removeItem('nk_has_logged_in');
+      localStorage.removeItem('nk_is_first_login');
+      alert('You have been logged out successfully!');
+      window.location.reload();
+    });
+    
+    // Show welcome banner if just logged in
     const isFirstLogin = localStorage.getItem('nk_is_first_login');
     const user = JSON.parse(localStorage.getItem('nk_user') || '{}');
     
