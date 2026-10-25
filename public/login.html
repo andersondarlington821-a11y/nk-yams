@@ -261,7 +261,7 @@
   });
 
   // Redirect if already logged in
-  if (localStorage.getItem('nk_token')) window.location.href = 'index.html';
+  if (localStorage.getItem('nk_token')) window.location.href = 'dashboard.html';
 
   // Password toggle
   document.getElementById('pwToggle').addEventListener('click', () => {
@@ -329,7 +329,7 @@
           : `Welcome back, ${data.user.fullName || data.user.email}! 👋`;
         
         showAlert(welcomeMsg, 'success');
-        const redirect = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
+        const redirect = new URLSearchParams(window.location.search).get('redirect') || 'dashboard.html';
         setTimeout(() => window.location.href = redirect, 2000);
       } else {
         showAlert(data.message || 'Invalid email or password');

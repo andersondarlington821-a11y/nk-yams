@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — NK's Premium Yams</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    /* Auto Theme Detection */
+    :root {
+      color-scheme: light dark;
+    }
+    
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg-primary: #FFFBF5;
+        --bg-secondary: #FFF;
+        --bg-accent: linear-gradient(135deg, #7B3F00 0%, #A85000 100%);
+        --text-primary: #1A0E05;
+        --text-secondary: #5C3D2E;
+        --text-muted: #8B6F5C;
+        --accent: #D4920A;
+        --accent-hover: #F0A832;
+        --accent-glow: rgba(212, 146, 10, 0.2);
+        --border: rgba(123, 63, 0, 0.1);
+        --shadow: 0 20px 60px rgba(123, 63, 0, 0.15);
+        --card-bg: rgba(255, 255, 255, 0.9);
+        --modal-overlay: rgba(0, 0, 0, 0.5);
+      }
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #0A0604;
+        --bg-secondary: #1A1108;
+        --bg-accent: linear-gradient(135deg, #A85000 0%, #D4920A 100%);
+        --text-primary: #F5E6D3;
+        --text-secondary: #C8B8A8;
+        --text-muted: #8B7B6B;
+        --accent: #F0A832;
+        --accent-hover: #FFB84D;
+        --accent-glow: rgba(240, 168, 50, 0.3);
+        --border: rgba(240, 168, 50, 0.15);
+        --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        --card-bg: rgba(26, 17, 8, 0.95);
+        --modal-overlay: rgba(0, 0, 0, 0.7);
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .nav-btn {
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      background: transparent;
+      border: 2px solid var(--accent);
+      color: var(--accent) !important;
+      cursor: pointer;
+    }
+
+    .nav-btn:hover {
+      background: var(--accent);
+      color: #fff !important;
+    }
+
+    /* Welcome Banner */
+    .welcome-banner {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, #16A34A, #22C55E);
+      color: #fff;
+      padding: 1rem 2rem;
+      text-align: center;
+      z-index: 999;
+      box-shadow: 0 4px 16px rgba(22, 163, 74, 0.3);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .welcome-banner i {
+      margin-right: 0.5rem;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-top: 140px;
+      padding: 2rem;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .page-subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 3rem;
+    }
+
+    /* Products Grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      margin-top: 2rem;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow);
+    }
+
+    .product-image {
+      height: 280px;
+      background: var(--bg-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .product-image::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
+    }
+
+    .product-info {
+      padding: 2rem;
+    }
+
+    .product-info h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .product-price {
+      font-size: 1.3rem;
+      color: var(--accent);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .product-info p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+
+    .btn {
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: var(--bg-accent);
+      color: #fff;
+      box-shadow: 0 8px 24px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px var(--accent-glow);
+    }
+
+    /* Order Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--modal-overlay);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--card-bg);
+      border-radius: 24px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .modal-close:hover {
+      background: var(--border);
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .modal-product-image {
+      width: 100%;
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-group select,
+    .form-group input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      background: var(--bg-primary);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .form-group select:focus,
+    .form-group input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+    }
+
+    .price-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .price-option {
+      padding: 1rem;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: var(--bg-primary);
+    }
+
+    .price-option:hover {
+      border-color: var(--accent);
+    }
+
+    .price-option.selected {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    .price-option input[type="radio"] {
+      display: none;
+    }
+
+    .price-option .price-label {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+    }
+
+    .price-option .price-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quantity-btn {
+      width: 45px;
+      height: 45px;
+      border: 2px solid var(--border);
+      background: var(--bg-primary);
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: var(--text-primary);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quantity-btn:hover {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    .quantity-display {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .order-summary {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .order-summary h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .summary-row.total {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      padding-top: 1rem;
+      border-top: 2px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    .summary-row .value {
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .alert.success {
+      background: rgba(22, 163, 74, 0.1);
+      border: 1px solid rgba(22, 163, 74, 0.3);
+      color: #16A34A;
+      display: flex;
+    }
+
+    .alert.error {
+      background: rgba(220, 38, 38, 0.1);
+      border: 1px solid rgba(220, 38, 38, 0.3);
+      color: #DC2626;
+      display: flex;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .nav-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+      }
+
+      .welcome-banner {
+        font-size: 0.95rem;
+        padding: 0.75rem 1rem;
+      }
+
+      .main-content {
+        margin-top: 120px;
+        padding: 1rem;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .price-options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav id="nav">
+  <div class="nav-container">
+    <a href="index.html" class="logo">
+      🍠 NK's<span>Yams</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="#" class="nav-btn" id="logoutBtn">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Welcome Banner -->
+<div class="welcome-banner" id="welcomeBanner">
+  <i class="fas fa-user-circle"></i> <span id="welcomeMessage">Welcome back!</span>
+</div>
+
+<!-- Main Content -->
+<main class="main-content">
+  <h1 class="page-title">Order Premium Yams</h1>
+  <p class="page-subtitle">Select your favorite yams and place your order</p>
+
+  <!-- Products Grid -->
+  <div class="products-grid" id="productsGrid">
+    <!-- Products will be loaded here -->
+  </div>
+</main>
+
+<!-- Order Modal -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalTitle">Order Yam</h3>
+      <button class="modal-close" id="modalClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-product-image" id="modalProductImage"></div>
+      
+      <div class="alert" id="alertBox"></div>
+
+      <div class="form-group">
+        <label>Select Price Range</label>
+        <div class="price-options" id="priceOptions">
+          <label class="price-option">
+            <input type="radio" name="price" value="1500" />
+            <div class="price-label">₦1,500</div>
+            <div class="price-desc">Small</div>
+          </label>
+          <label class="price-option">
+            <input type="radio" name="price" value="2250" checked />
+            <div class="price-label">₦2,250</div>
+            <div class="price-desc">Medium</div>
+          </label>
+          <label class="price-option">
+            <input type="radio" name="price" value="3000" />
+            <div class="price-label">₦3,000</div>
+            <div class="price-desc">Large</div>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Quantity</label>
+        <div class="quantity-control">
+          <button class="quantity-btn" id="decreaseBtn">
+            <i class="fas fa-minus"></i>
+          </button>
+          <div class="quantity-display" id="quantityDisplay">1</div>
+          <button class="quantity-btn" id="increaseBtn">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="order-summary">
+        <h4>Order Summary</h4>
+        <div class="summary-row">
+          <span>Yam Type:</span>
+          <span class="value" id="summaryYamType">-</span>
+        </div>
+        <div class="summary-row">
+          <span>Price per Unit:</span>
+          <span class="value" id="summaryPrice">₦2,250</span>
+        </div>
+        <div class="summary-row">
+          <span>Quantity:</span>
+          <span class="value" id="summaryQuantity">1</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total Amount:</span>
+          <span class="value" id="summaryTotal">₦2,250</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Delivery Address</label>
+        <input type="text" id="deliveryAddress" placeholder="Enter your delivery address" />
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="phoneNumber" placeholder="Your phone number" />
+      </div>
+
+      <button class="btn btn-primary" id="placeOrderBtn">
+        <i class="fas fa-check-circle"></i> Place Order
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API = 'https://nk-yams-api.onrender.com';
+  
+  // Check authentication
+  const token = localStorage.getItem('nk_token');
+  const user = JSON.parse(localStorage.getItem('nk_user') || '{}');
+  
+  if (!token) {
+    window.location.href = 'login.html';
+  }
+
+  // Show welcome message
+  const welcomeMessage = document.getElementById('welcomeMessage');
+  welcomeMessage.textContent = `Welcome, ${user.fullName || user.email || 'User'}! 👋`;
+
+  // Logout functionality
+  document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.clear();
+    alert('You have been logged out successfully!');
+    window.location.href = 'index.html';
+  });
+
+  // Products data
+  const products = [
+    {
+      id: 'water-yam',
+      name: 'Water Yam',
+      image: 'images/water-yam.jpg',
+      description: 'Smooth texture and mild flavor, perfect for pounding and frying'
+    },
+    {
+      id: 'yellow-yam',
+      name: 'Yellow Yam',
+      image: 'images/yellow-yam.jpg',
+      description: 'Sweet and nutritious, ideal for all your favorite yam dishes'
+    },
+    {
+      id: 'white-yam',
+      name: 'White Yam',
+      image: 'images/white-yam.jpg',
+      description: 'Firm and starchy, the traditional choice for authentic Nigerian cuisine'
+    }
+  ];
+
+  // Render products
+  const productsGrid = document.getElementById('productsGrid');
+  products.forEach(product => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="product-image" style="background-image: url('${product.image}');"></div>
+      <div class="product-info">
+        <h3>${product.name}</h3>
+        <div class="product-price">₦1,500 - ₦3,000</div>
+        <p>${product.description}</p>
+        <button class="btn btn-primary" onclick="openOrderModal('${product.id}')">
+          <i class="fas fa-cart-plus"></i> Order Now
+        </button>
+      </div>
+    `;
+    productsGrid.appendChild(card);
+  });
+
+  // Modal functionality
+  const modal = document.getElementById('orderModal');
+  const modalClose = document.getElementById('modalClose');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalProductImage = document.getElementById('modalProductImage');
+  const alertBox = document.getElementById('alertBox');
+  
+  let currentProduct = null;
+  let currentPrice = 2250;
+  let currentQuantity = 1;
+
+  function openOrderModal(productId) {
+    currentProduct = products.find(p => p.id === productId);
+    if (!currentProduct) return;
+
+    modalTitle.textContent = `Order ${currentProduct.name}`;
+    modalProductImage.style.backgroundImage = `url('${currentProduct.image}')`;
+    document.getElementById('summaryYamType').textContent = currentProduct.name;
+    
+    // Reset form
+    currentQuantity = 1;
+    currentPrice = 2250;
+    document.getElementById('quantityDisplay').textContent = currentQuantity;
+    document.querySelector('input[name="price"][value="2250"]').checked = true;
+    updatePriceSelection();
+    updateSummary();
+    
+    alertBox.className = 'alert';
+    alertBox.innerHTML = '';
+    
+    modal.classList.add('active');
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+  }
+
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Price selection
+  const priceOptions = document.querySelectorAll('.price-option');
+  priceOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      const radio = option.querySelector('input[type="radio"]');
+      radio.checked = true;
+      currentPrice = parseInt(radio.value);
+      updatePriceSelection();
+      updateSummary();
+    });
+  });
+
+  function updatePriceSelection() {
+    priceOptions.forEach(opt => {
+      opt.classList.remove('selected');
+      if (opt.querySelector('input').checked) {
+        opt.classList.add('selected');
+      }
+    });
+  }
+
+  // Quantity controls
+  document.getElementById('decreaseBtn').addEventListener('click', () => {
+    if (currentQuantity > 1) {
+      currentQuantity--;
+      document.getElementById('quantityDisplay').textContent = currentQuantity;
+      updateSummary();
+    }
+  });
+
+  document.getElementById('increaseBtn').addEventListener('click', () => {
+    if (currentQuantity < 100) {
+      currentQuantity++;
+      document.getElementById('quantityDisplay').textContent = currentQuantity;
+      updateSummary();
+    }
+  });
+
+  // Update summary
+  function updateSummary() {
+    const total = currentPrice * currentQuantity;
+    document.getElementById('summaryPrice').textContent = `₦${currentPrice.toLocaleString()}`;
+    document.getElementById('summaryQuantity').textContent = currentQuantity;
+    document.getElementById('summaryTotal').textContent = `₦${total.toLocaleString()}`;
+  }
+
+  // Place order
+  document.getElementById('placeOrderBtn').addEventListener('click', async () => {
+    const address = document.getElementById('deliveryAddress').value.trim();
+    const phone = document.getElementById('phoneNumber').value.trim();
+
+    if (!address) {
+      showAlert('Please enter your delivery address', 'error');
+      return;
+    }
+    if (!phone) {
+      showAlert('Please enter your phone number', 'error');
+      return;
+    }
+
+    const orderData = {
+      yamType: currentProduct.name,
+      pricePerUnit: currentPrice,
+      quantity: currentQuantity,
+      totalAmount: currentPrice * currentQuantity,
+      deliveryAddress: address,
+      phone: phone
+    };
+
+    const btn = document.getElementById('placeOrderBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Placing Order...';
+
+    try {
+      const res = await fetch(`${API}/api/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(orderData)
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        showAlert(`Order placed successfully! Order ID: ${data.order.orderId}`, 'success');
+        setTimeout(() => {
+          closeModal();
+          // Clear form
+          document.getElementById('deliveryAddress').value = '';
+          document.getElementById('phoneNumber').value = '';
+        }, 2000);
+      } else {
+        showAlert(data.message || 'Failed to place order', 'error');
+      }
+    } catch (err) {
+      showAlert('Connection error. Please check your internet connection.', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-check-circle"></i> Place Order';
+    }
+  });
+
+  function showAlert(msg, type = 'error') {
+    alertBox.className = 'alert ' + type;
+    alertBox.innerHTML = `<i class="fas fa-${type === 'error' ? 'circle-exclamation' : 'circle-check'}"></i> ${msg}`;
+  }
+
+  // Initialize price selection on load
+  updatePriceSelection();
+</script>
+
+</body>
+</html>

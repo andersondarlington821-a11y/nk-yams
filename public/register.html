@@ -459,7 +459,7 @@
   });
 
   // ---- Redirect if already logged in ----
-  if (localStorage.getItem('nk_token')) window.location.href = 'index.html';
+  if (localStorage.getItem('nk_token')) window.location.href = 'dashboard.html';
 
   // ---- PASSWORD TOGGLE ----
   function makeToggle(btnId, iconId, inputId) {
@@ -563,7 +563,7 @@
         localStorage.setItem('nk_user',  JSON.stringify(data.user));
         localStorage.setItem('nk_is_first_login', 'true'); // Mark as first-time user
         showAlert(`🎉 Welcome ${data.user.fullName}! Your account is ready!`, 'success');
-        setTimeout(() => window.location.href = 'index.html', 2000);
+        setTimeout(() => window.location.href = 'dashboard.html', 2000);
       } else {
         if (data.message && data.message.toLowerCase().includes('email')) {
           fieldError('email', data.message);
