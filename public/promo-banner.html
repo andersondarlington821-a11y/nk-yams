@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NK's Premium Yams - Promotional Banner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    /* Banner Container - 1200x630px (Facebook/Social Media optimal size) */
+    .banner {
+      width: 1200px;
+      height: 630px;
+      background: linear-gradient(135deg, #7B3F00 0%, #A85000 50%, #D4920A 100%);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border-radius: 0;
+    }
+
+    /* Background Pattern */
+    .banner::before {
+      content: '🍠';
+      position: absolute;
+      font-size: 400px;
+      opacity: 0.08;
+      right: -50px;
+      top: 50%;
+      transform: translateY(-50%) rotate(-15deg);
+      z-index: 1;
+    }
+
+    .banner::after {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255, 193, 7, 0.15) 0%, transparent 70%);
+      bottom: -200px;
+      left: -200px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    /* Content Container */
+    .content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 60px 80px;
+    }
+
+    /* Logo Section */
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo-icon {
+      font-size: 70px;
+      line-height: 1;
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-text span {
+      color: #FFD700;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 72px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      text-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      max-width: 700px;
+    }
+
+    .headline .highlight {
+      color: #FFD700;
+      display: block;
+    }
+
+    .subheadline {
+      font-size: 28px;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 40px;
+      font-weight: 400;
+      max-width: 650px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Features Grid */
+    .features {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 12px 20px;
+      border-radius: 50px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .feature-icon {
+      font-size: 24px;
+    }
+
+    .feature-text {
+      font-size: 18px;
+      color: #fff;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* CTA Section */
+    .cta-section {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .cta-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      background: #fff;
+      color: #7B3F00;
+      padding: 20px 40px;
+      border-radius: 50px;
+      font-size: 24px;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+      max-width: max-content;
+    }
+
+    .cta-icon {
+      font-size: 28px;
+    }
+
+    .website-url {
+      font-size: 22px;
+      color: #FFD700;
+      font-weight: 700;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    /* Badge */
+    .badge-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 15px;
+    }
+
+    .badge {
+      background: rgba(255, 215, 0, 0.2);
+      border: 3px solid #FFD700;
+      padding: 20px 30px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+    }
+
+    .badge-title {
+      font-size: 16px;
+      color: #FFD700;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+    }
+
+    .badge-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .phone-number {
+      font-size: 20px;
+      color: #fff;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 12px 24px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Download Button */
+    .download-info {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      z-index: 1000;
+    }
+
+    .download-info h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .download-info p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    .download-btn {
+      background: linear-gradient(135deg, #7B3F00, #D4920A);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 4px 16px rgba(123, 63, 0, 0.3);
+    }
+
+    .download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(123, 63, 0, 0.4);
+    }
+
+    /* Screenshot instructions */
+    .instructions {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      padding: 15px 30px;
+      border-radius: 50px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      font-size: 14px;
+      color: #666;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Download Instructions -->
+  <div class="download-info">
+    <h3>📸 How to Save Banner</h3>
+    <p><strong>Windows:</strong> Right-click banner → Save image as<br>
+    <strong>Or:</strong> Press <kbd>F12</kbd> → Screenshot tool</p>
+    <button class="download-btn" onclick="downloadBanner()">Download as PNG</button>
+  </div>
+
+  <div class="instructions">
+    💡 Tip: Right-click the banner and select "Save image as..." or take a screenshot
+  </div>
+
+  <!-- Banner -->
+  <div class="banner" id="banner">
+    <div class="content">
+      
+      <!-- Logo -->
+      <div class="logo-section">
+        <div class="logo-icon">🍠</div>
+        <div class="logo-text">NK's<span>Yams</span></div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <h1 class="headline">
+          Premium Nigerian Yams
+          <span class="highlight">Fresh from Farm to Table</span>
+        </h1>
+        
+        <p class="subheadline">
+          Experience authentic taste of premium quality yams, delivered fresh to your doorstep within 24 hours
+        </p>
+
+        <div class="features">
+          <div class="feature-item">
+            <span class="feature-icon">🌾</span>
+            <span class="feature-text">Farm Fresh</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">🚚</span>
+            <span class="feature-text">24hr Delivery</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">💎</span>
+            <span class="feature-text">Premium Quality</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div class="cta-section">
+        <div class="cta-left">
+          <button class="cta-button">
+            <span class="cta-icon">🛒</span>
+            <span>Order Now</span>
+          </button>
+          <div class="website-url">🌐 nk-yams-fo8t.vercel.app</div>
+        </div>
+
+        <div class="badge-container">
+          <div class="badge">
+            <div class="badge-title">Starting From</div>
+            <div class="badge-value">₦1,500</div>
+          </div>
+          <div class="phone-number">
+            <span>📞</span>
+            <span>+234 703 454 7179</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function downloadBanner() {
+      // Use html2canvas library for better quality
+      const banner = document.getElementById('banner');
+      
+      // Hide the download instructions
+      document.querySelector('.download-info').style.display = 'none';
+      document.querySelector('.instructions').style.display = 'none';
+      
+      // Method 1: Try to use html2canvas if available
+      if (typeof html2canvas !== 'undefined') {
+        html2canvas(banner, {
+          scale: 2,
+          backgroundColor: null,
+          logging: false
+        }).then(canvas => {
+          const link = document.createElement('a');
+          link.download = 'nk-yams-promotional-banner.png';
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+          
+          // Show instructions again
+          document.querySelector('.download-info').style.display = 'block';
+          document.querySelector('.instructions').style.display = 'block';
+        });
+      } else {
+        // Method 2: Fallback - guide user to take screenshot
+        alert('To save the banner:\n\n' +
+              '1. Right-click on the banner\n' +
+              '2. Select "Save image as..." or "Save picture as..."\n' +
+              '3. Choose where to save it\n\n' +
+              'OR\n\n' +
+              'Windows: Win + Shift + S (Snipping Tool)\n' +
+              'Mac: Cmd + Shift + 4');
+        
+        document.querySelector('.download-info').style.display = 'block';
+        document.querySelector('.instructions').style.display = 'block';
+      }
+    }
+
+    // Add html2canvas library for download functionality
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    document.head.appendChild(script);
+  </script>
+
+</body>
+</html>
