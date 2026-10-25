@@ -14,12 +14,22 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #f0f0f0;
+      background: #2a2a2a;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      padding: 2rem;
+      padding: 0;
+      margin: 0;
+      overflow: auto;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 20px;
     }
 
     /* Banner Container - 1200x630px (Facebook/Social Media optimal size) */
@@ -29,8 +39,9 @@
       background: linear-gradient(135deg, #7B3F00 0%, #A85000 50%, #D4920A 100%);
       position: relative;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
       border-radius: 0;
+      flex-shrink: 0;
     }
 
     /* Background Pattern */
@@ -257,6 +268,7 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
       text-align: center;
       z-index: 1000;
+      max-width: 300px;
     }
 
     .download-info h3 {
@@ -303,6 +315,68 @@
       color: #666;
       z-index: 1000;
     }
+
+    /* Zoom controls */
+    .zoom-controls {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 1000;
+    }
+
+    .zoom-btn {
+      background: #fff;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .zoom-btn:hover {
+      background: #f0f0f0;
+    }
+
+    /* Responsive scaling */
+    @media (max-width: 1280px) {
+      .banner {
+        transform: scale(0.8);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .banner {
+        transform: scale(0.65);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .banner {
+        transform: scale(0.5);
+      }
+      
+      .download-info {
+        top: 10px;
+        right: 10px;
+        padding: 15px 20px;
+        max-width: 250px;
+      }
+      
+      .download-info h3 {
+        font-size: 16px;
+      }
+      
+      .download-info p {
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -319,8 +393,17 @@
     💡 Tip: Right-click the banner and select "Save image as..." or take a screenshot
   </div>
 
-  <!-- Banner -->
-  <div class="banner" id="banner">
+  <!-- Zoom Controls -->
+  <div class="zoom-controls">
+    <button class="zoom-btn" onclick="zoomOut()" title="Zoom Out">−</button>
+    <button class="zoom-btn" onclick="zoomIn()" title="Zoom In">+</button>
+    <button class="zoom-btn" onclick="resetZoom()" title="Reset">⟲</button>
+  </div>
+
+  <!-- Container to center banner -->
+  <div class="container">
+    <!-- Banner -->
+    <div class="banner" id="banner">
     <div class="content">
       
       <!-- Logo -->
@@ -382,6 +465,23 @@
   </div>
 
   <script>
+    let currentZoom = 1;
+
+    function zoomIn() {
+      currentZoom = Math.min(currentZoom + 0.1, 2);
+      document.getElementById('banner').style.transform = `scale(${currentZoom})`;
+    }
+
+    function zoomOut() {
+      currentZoom = Math.max(currentZoom - 0.1, 0.3);
+      document.getElementById('banner').style.transform = `scale(${currentZoom})`;
+    }
+
+    function resetZoom() {
+      currentZoom = 1;
+      document.getElementById('banner').style.transform = 'scale(1)';
+    }
+
     function downloadBanner() {
       // Use html2canvas library for better quality
       const banner = document.getElementById('banner');
