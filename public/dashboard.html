@@ -882,13 +882,19 @@
       const data = await res.json();
 
       if (data.success) {
-        showAlert(`Order placed successfully! Order ID: ${data.order.orderId}`, 'success');
-        setTimeout(() => {
-          closeModal();
-          // Clear form
-          document.getElementById('deliveryAddress').value = '';
-          document.getElementById('phoneNumber').value = '';
-        }, 2000);
+        // Redirect to success page with order details
+        const successUrl = new URLSearchParams({
+          orderId: data.orderId || data.order.orderId,
+          customerName: orderData.customerName,
+          phone: orderData.phone,
+          address: orderData.deliveryAddress,
+          yamType: orderData.yamType,
+          pricePerUnit: orderData.pricePerTuber,
+          quantity: orderData.quantity,
+          totalAmount: orderData.pricePerTuber * orderData.quantity
+        });
+        
+        window.location.href = `order-success.html?${successUrl.toString()}`;
       } else {
         showAlert(data.message || 'Failed to place order', 'error');
       }

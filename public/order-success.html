@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Confirmation — NK's Premium Yams</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    /* Auto Theme Detection */
+    :root {
+      color-scheme: light dark;
+    }
+    
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg-primary: #FFFBF5;
+        --bg-secondary: #FFF;
+        --bg-accent: linear-gradient(135deg, #7B3F00 0%, #A85000 100%);
+        --text-primary: #1A0E05;
+        --text-secondary: #5C3D2E;
+        --text-muted: #8B6F5C;
+        --accent: #D4920A;
+        --accent-hover: #F0A832;
+        --accent-glow: rgba(212, 146, 10, 0.2);
+        --border: rgba(123, 63, 0, 0.1);
+        --shadow: 0 20px 60px rgba(123, 63, 0, 0.15);
+        --card-bg: rgba(255, 255, 255, 0.9);
+        --success: #16A34A;
+        --success-bg: rgba(22, 163, 74, 0.1);
+        --success-border: rgba(22, 163, 74, 0.3);
+      }
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #0A0604;
+        --bg-secondary: #1A1108;
+        --bg-accent: linear-gradient(135deg, #A85000 0%, #D4920A 100%);
+        --text-primary: #F5E6D3;
+        --text-secondary: #C8B8A8;
+        --text-muted: #8B7B6B;
+        --accent: #F0A832;
+        --accent-hover: #FFB84D;
+        --accent-glow: rgba(240, 168, 50, 0.3);
+        --border: rgba(240, 168, 50, 0.15);
+        --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        --card-bg: rgba(26, 17, 8, 0.95);
+        --success: #22C55E;
+        --success-bg: rgba(34, 197, 94, 0.15);
+        --success-border: rgba(34, 197, 94, 0.4);
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 700px;
+      width: 100%;
+    }
+
+    /* Success Animation */
+    .success-checkmark {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 2rem;
+      position: relative;
+    }
+
+    .success-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--success-bg);
+      border: 3px solid var(--success);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: scaleIn 0.5s ease;
+    }
+
+    .success-icon {
+      font-size: 3rem;
+      color: var(--success);
+      animation: checkIn 0.6s 0.3s ease both;
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes checkIn {
+      from { transform: scale(0) rotate(-45deg); opacity: 0; }
+      to { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    /* Card */
+    .confirmation-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 3rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      animation: slideUp 0.6s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .success-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .success-subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    /* Order ID Badge */
+    .order-id-badge {
+      background: var(--bg-accent);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      border-radius: 16px;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 8px 24px var(--accent-glow);
+    }
+
+    .order-id-label {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      margin-bottom: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .order-id-value {
+      font-family: 'Courier New', monospace;
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+    }
+
+    /* Order Details */
+    .order-details {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .detail-value {
+      color: var(--text-primary);
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .detail-row.total {
+      margin-top: 1rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--border);
+      border-bottom: none;
+    }
+
+    .detail-row.total .detail-label {
+      font-size: 1.1rem;
+      color: var(--text-primary);
+    }
+
+    .detail-row.total .detail-value {
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+
+    /* Status Badge */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 193, 7, 0.15);
+      color: #F59E0B;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    /* Info Box */
+    .info-box {
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .info-icon {
+      font-size: 1.5rem;
+      color: var(--success);
+      flex-shrink: 0;
+    }
+
+    .info-content {
+      flex: 1;
+    }
+
+    .info-title {
+      font-weight: 700;
+      color: var(--success);
+      margin-bottom: 0.25rem;
+      font-size: 0.95rem;
+    }
+
+    .info-text {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-primary {
+      background: var(--bg-accent);
+      color: #fff;
+      box-shadow: 0 8px 24px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px var(--accent-glow);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: #fff;
+      }
+      
+      .action-buttons {
+        display: none;
+      }
+      
+      .confirmation-card {
+        box-shadow: none;
+        border: 2px solid #000;
+      }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      .confirmation-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .success-title {
+        font-size: 2rem;
+      }
+
+      .success-subtitle {
+        font-size: 0.95rem;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .order-id-value {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="success-checkmark">
+    <div class="success-circle">
+      <i class="fas fa-check success-icon"></i>
+    </div>
+  </div>
+
+  <div class="confirmation-card">
+    <h1 class="success-title">Order Confirmed!</h1>
+    <p class="success-subtitle">Thank you for your order. We'll prepare your yams right away.</p>
+
+    <div class="order-id-badge">
+      <div class="order-id-label">Order ID</div>
+      <div class="order-id-value" id="orderId">Loading...</div>
+    </div>
+
+    <div class="order-details">
+      <div class="detail-row">
+        <span class="detail-label">Customer Name</span>
+        <span class="detail-value" id="customerName">-</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Phone Number</span>
+        <span class="detail-value" id="phone">-</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Delivery Address</span>
+        <span class="detail-value" id="address" style="max-width: 60%; text-align: right;">-</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Yam Type</span>
+        <span class="detail-value" id="yamType">-</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Price per Unit</span>
+        <span class="detail-value" id="pricePerUnit">-</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Quantity</span>
+        <span class="detail-value" id="quantity">-</span>
+      </div>
+      <div class="detail-row total">
+        <span class="detail-label">Total Amount</span>
+        <span class="detail-value" id="totalAmount">-</span>
+      </div>
+    </div>
+
+    <div class="detail-row" style="border: none; padding: 1rem 0;">
+      <span class="detail-label">Status</span>
+      <span class="status-badge">
+        <i class="fas fa-clock"></i> Pending Confirmation
+      </span>
+    </div>
+
+    <div class="info-box">
+      <i class="fas fa-info-circle info-icon"></i>
+      <div class="info-content">
+        <div class="info-title">What's Next?</div>
+        <div class="info-text">
+          We'll confirm your order within 24 hours and deliver your fresh yams to your doorstep. You'll receive updates via phone.
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-row" style="border: none; padding: 0;">
+      <span class="detail-label">Order Date</span>
+      <span class="detail-value" id="orderDate">-</span>
+    </div>
+
+    <div class="action-buttons">
+      <button class="btn btn-secondary" onclick="window.print()">
+        <i class="fas fa-print"></i> Print Receipt
+      </button>
+      <a href="dashboard.html" class="btn btn-primary">
+        <i class="fas fa-shopping-cart"></i> Order More
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Get order data from URL parameters
+  const params = new URLSearchParams(window.location.search);
+  
+  const orderData = {
+    orderId: params.get('orderId') || 'N/A',
+    customerName: params.get('customerName') || 'N/A',
+    phone: params.get('phone') || 'N/A',
+    address: params.get('address') || 'N/A',
+    yamType: params.get('yamType') || 'N/A',
+    pricePerUnit: params.get('pricePerUnit') || '0',
+    quantity: params.get('quantity') || '0',
+    totalAmount: params.get('totalAmount') || '0'
+  };
+
+  // If no order data, redirect to dashboard
+  if (!params.get('orderId')) {
+    window.location.href = 'dashboard.html';
+  }
+
+  // Populate the page
+  document.getElementById('orderId').textContent = orderData.orderId;
+  document.getElementById('customerName').textContent = orderData.customerName;
+  document.getElementById('phone').textContent = orderData.phone;
+  document.getElementById('address').textContent = decodeURIComponent(orderData.address);
+  document.getElementById('yamType').textContent = orderData.yamType;
+  document.getElementById('pricePerUnit').textContent = `₦${parseInt(orderData.pricePerUnit).toLocaleString()}`;
+  document.getElementById('quantity').textContent = orderData.quantity;
+  document.getElementById('totalAmount').textContent = `₦${parseInt(orderData.totalAmount).toLocaleString()}`;
+  document.getElementById('orderDate').textContent = new Date().toLocaleString('en-NG', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  // Update page title
+  document.title = `Order ${orderData.orderId} Confirmed — NK's Premium Yams`;
+</script>
+
+</body>
+</html>
