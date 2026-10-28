@@ -615,7 +615,7 @@
       <div class="alert" id="alertBox"></div>
 
       <div class="form-group">
-        <label>Select Price Range</label>
+        <label>Select Price Range or Enter Custom Price</label>
         <div class="price-options" id="priceOptions">
           <label class="price-option">
             <input type="radio" name="price" value="1500" />
@@ -632,6 +632,26 @@
             <div class="price-label">₦3,000</div>
             <div class="price-desc">Large</div>
           </label>
+        </div>
+        
+        <div style="margin-top: 1rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+          — OR —
+        </div>
+        
+        <div style="margin-top: 1rem;">
+          <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.5rem;">
+            Enter Custom Price (Minimum ₦1,500)
+          </label>
+          <input type="number" 
+                 id="customPrice" 
+                 placeholder="Enter amount (₦)" 
+                 min="1500"
+                 step="50"
+                 style="width: 100%; padding: 0.9rem 1rem; background: var(--bg-primary); border: 1.5px solid var(--border); border-radius: 12px; color: var(--text-primary); font-size: 0.95rem; outline: none; transition: all 0.3s;"
+                 oninput="handleCustomPrice(this.value)" />
+          <div id="priceError" style="color: var(--error); font-size: 0.85rem; margin-top: 0.5rem; display: none;">
+            Price must be at least ₦1,500
+          </div>
         </div>
       </div>
 
@@ -759,6 +779,43 @@
   let currentProduct = null;
   let currentPrice = 2250;
   let currentQuantity = 1;
+  let isCustomPrice = false;
+
+  // Handle custom price input
+  function handleCustomPrice(value) {
+    const customPriceInput = document.getElementById('customPrice');
+    const priceError = document.getElementById('priceError');
+    const price = parseInt(value);
+
+    // Clear radio selections when custom price is entered
+    if (value) {
+      document.querySelectorAll('input[name="price"]').forEach(radio => {
+        radio.checked = false;
+      });
+      updatePriceSelection();
+      isCustomPrice = true;
+
+      if (price < 1500) {
+        priceError.style.display = 'block';
+        customPriceInput.style.borderColor = 'var(--error)';
+        currentPrice = 1500;
+      } else {
+        priceError.style.display = 'none';
+        customPriceInput.style.borderColor = 'var(--accent)';
+        currentPrice = price;
+      }
+    } else {
+      // If cleared, revert to default selection
+      document.querySelector('input[name="price"][value="2250"]').checked = true;
+      updatePriceSelection();
+      isCustomPrice = false;
+      currentPrice = 2250;
+      priceError.style.display = 'none';
+      customPriceInput.style.borderColor = 'var(--border)';
+    }
+
+    updateSummary();
+  }
 
   function openOrderModal(productId) {
     currentProduct = products.find(p => p.id === productId);
@@ -771,8 +828,11 @@
     // Reset form
     currentQuantity = 1;
     currentPrice = 2250;
+    isCustomPrice = false;
     document.getElementById('quantityDisplay').textContent = currentQuantity;
     document.querySelector('input[name="price"][value="2250"]').checked = true;
+    document.getElementById('customPrice').value = '';
+    document.getElementById('priceError').style.display = 'none';
     updatePriceSelection();
     updateSummary();
     
@@ -804,6 +864,10 @@
       const radio = option.querySelector('input[type="radio"]');
       radio.checked = true;
       currentPrice = parseInt(radio.value);
+      isCustomPrice = false;
+      // Clear custom price input
+      document.getElementById('customPrice').value = '';
+      document.getElementById('priceError').style.display = 'none';
       updatePriceSelection();
       updateSummary();
     });
@@ -854,6 +918,13 @@
     }
     if (!phone) {
       showAlert('Please enter your phone number', 'error');
+      return;
+    }
+
+    // Validate custom price if entered
+    if (isCustomPrice && currentPrice < 1500) {
+      showAlert('Price must be at least ₦1,500', 'error');
+      document.getElementById('priceError').style.display = 'block';
       return;
     }
 

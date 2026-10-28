@@ -438,6 +438,20 @@
         <i class="fas fa-shopping-cart"></i> Order More
       </a>
     </div>
+
+    <!-- WhatsApp Support Section -->
+    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--border); text-align: center;">
+      <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.95rem;">
+        Any questions about your order?
+      </p>
+      <a href="https://wa.me/2348087429039?text=Hello!%20I%20have%20a%20question%20about%20my%20order%20" 
+         id="whatsappSupportBtn"
+         target="_blank"
+         style="display: inline-flex; align-items: center; gap: 0.75rem; background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1rem; box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3); transition: all 0.3s;">
+        <i class="fab fa-whatsapp" style="font-size: 1.5rem;"></i>
+        Contact Support on WhatsApp
+      </a>
+    </div>
   </div>
 </div>
 
@@ -460,6 +474,10 @@
   if (!params.get('orderId')) {
     window.location.href = 'dashboard.html';
   }
+
+  // Update WhatsApp link with order ID
+  document.getElementById('whatsappSupportBtn').href = 
+    `https://wa.me/2348087429039?text=Hello!%20I%20have%20a%20question%20about%20my%20order%20${orderData.orderId}`;
 
   // Populate the page
   document.getElementById('orderId').textContent = orderData.orderId;
