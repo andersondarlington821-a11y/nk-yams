@@ -9,6 +9,10 @@
       "destination": "/public/dashboard.html"
     },
     {
+      "source": "/my-orders",
+      "destination": "/public/my-orders.html"
+    },
+    {
       "source": "/login",
       "destination": "/public/login.html"
     },
