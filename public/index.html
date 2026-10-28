@@ -197,6 +197,12 @@
       text-align: center;
       position: relative;
       overflow: hidden;
+      margin-top: 0;
+    }
+
+    /* Adjust hero when user is logged in */
+    body.logged-in .hero {
+      margin-top: 50px;
     }
 
     .hero::before {
@@ -571,8 +577,12 @@
     <div class="nav-links" id="navLinks">
       <a href="#features">Features</a>
       <a href="#products">Products</a>
+      <!-- When logged out -->
       <a href="register.html" class="nav-btn-secondary" id="registerBtn">Register</a>
       <a href="login.html" class="nav-btn-primary" id="loginBtn">Login</a>
+      <!-- When logged in -->
+      <a href="dashboard.html" class="nav-btn-primary" id="dashboardBtn" style="display:none;">Dashboard</a>
+      <a href="my-orders.html" id="myOrdersBtn" style="display:none;">My Orders</a>
       <a href="#" class="nav-btn-secondary" id="logoutBtn" style="display:none;">Logout</a>
     </div>
     <button class="mobile-toggle" id="mobileToggle">
@@ -580,6 +590,11 @@
     </button>
   </div>
 </nav>
+
+<!-- Logged In User Banner -->
+<div id="userBanner" style="display:none;position:fixed;top:70px;left:0;right:0;background:linear-gradient(135deg,#16A34A,#22C55E);color:#fff;padding:0.75rem 2rem;z-index:999;box-shadow:0 4px 16px rgba(22,163,74,0.3);text-align:center;font-weight:600;">
+  <i class="fas fa-user-circle"></i> <span id="userGreeting">Welcome back!</span>
+</div>
 
 <!-- Welcome Banner (shown after login) -->
 <div id="welcomeBanner" style="display:none;position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:999;background:linear-gradient(135deg,#16A34A,#22C55E);color:#fff;padding:1rem 2rem;border-radius:50px;box-shadow:0 8px 32px rgba(22,163,74,0.4);animation:slideDown 0.5s ease;max-width:90%;text-align:center">
@@ -753,29 +768,55 @@
   // Check login status and show/hide buttons
   window.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('nk_token');
+    const user = JSON.parse(localStorage.getItem('nk_user') || '{}');
+    
     const loginBtn = document.getElementById('loginBtn');
     const registerBtn = document.getElementById('registerBtn');
     const logoutBtn = document.getElementById('logoutBtn');
+    const dashboardBtn = document.getElementById('dashboardBtn');
+    const myOrdersBtn = document.getElementById('myOrdersBtn');
+    const userBanner = document.getElementById('userBanner');
+    const userGreeting = document.getElementById('userGreeting');
     
-    if (token) {
-      // User is logged in - hide login/register, show logout
+    if (token && user.fullName) {
+      // User is logged in - show logged in UI
       loginBtn.style.display = 'none';
       registerBtn.style.display = 'none';
       logoutBtn.style.display = 'block';
+      dashboardBtn.style.display = 'block';
+      myOrdersBtn.style.display = 'block';
+      
+      // Show welcome banner
+      userBanner.style.display = 'block';
+      userGreeting.textContent = `Welcome back, ${user.fullName}! 👋`;
+      
+      // Add class to body for styling adjustments
+      document.body.classList.add('logged-in');
+      
+      // Update hero CTA to go to dashboard instead of login
+      document.querySelectorAll('.hero-buttons a[href="login.html"]').forEach(btn => {
+        btn.href = 'dashboard.html';
+      });
+      
+      // Update CTA section button
+      document.querySelectorAll('.cta a[href="login.html"]').forEach(btn => {
+        btn.href = 'dashboard.html';
+      });
+      
     } else {
-      // User is NOT logged in - show login/register, hide logout
+      // User is NOT logged in - show login/register
       loginBtn.style.display = 'block';
       registerBtn.style.display = 'block';
       logoutBtn.style.display = 'none';
+      dashboardBtn.style.display = 'none';
+      myOrdersBtn.style.display = 'none';
+      userBanner.style.display = 'none';
     }
     
     // Logout functionality
     logoutBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      localStorage.removeItem('nk_token');
-      localStorage.removeItem('nk_user');
-      localStorage.removeItem('nk_has_logged_in');
-      localStorage.removeItem('nk_is_first_login');
+      localStorage.clear();
       alert('You have been logged out successfully!');
       window.location.reload();
     });
